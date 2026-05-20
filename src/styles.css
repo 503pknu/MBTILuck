@@ -228,6 +228,53 @@ p {
   font-weight: 900;
 }
 
+.year-picker {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 2px solid rgba(255, 79, 154, 0.28);
+  border-radius: 8px;
+  background: #fff2f8;
+}
+
+.year-picker > span {
+  color: var(--pink-dark);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.year-controls {
+  display: grid;
+  grid-template-columns: 68px 58px minmax(120px, 1fr) 58px 68px;
+  gap: 8px;
+  align-items: center;
+}
+
+.year-controls button,
+.year-controls input {
+  min-height: 62px;
+  border-radius: 8px;
+  font-weight: 900;
+}
+
+.year-controls button {
+  border: 2px solid var(--pink);
+  color: var(--pink-dark);
+  background: #fff;
+}
+
+.year-controls input {
+  border-color: var(--pink);
+  color: var(--pink-dark);
+  font-size: 36px;
+  text-align: center;
+}
+
+.year-controls input::-webkit-outer-spin-button,
+.year-controls input::-webkit-inner-spin-button {
+  margin: 0;
+}
+
 .section-head,
 .result-head {
   display: flex;
@@ -592,6 +639,25 @@ p {
   .blood-grid,
   .score-grid {
     grid-template-columns: 1fr;
+  }
+
+  .year-picker {
+    padding: 14px;
+  }
+
+  .year-controls {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .year-controls input {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    min-height: 72px;
+    font-size: 42px;
+  }
+
+  .year-controls button {
+    min-height: 54px;
   }
 
   .panel {

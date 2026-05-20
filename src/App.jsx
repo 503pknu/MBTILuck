@@ -217,17 +217,54 @@ function BloodStep({ value, onChange }) {
 }
 
 function BirthdayStep({ value, zodiac, onChange }) {
+  const birthday = getBirthdayParts(value);
+  const currentYear = today.getFullYear();
+  const selectedYear = birthday.year || 2000;
+
+  function changeYear(nextYear) {
+    const safeYear = clamp(Number(nextYear) || 2000, 1900, currentYear);
+    onChange(makeBirthdayValue(safeYear, birthday.month || 1, birthday.day || 1));
+  }
+
   return (
     <section className="panel birthday-panel">
       <div>
         <span className="eyebrow"><CalendarDays size={16} /> 4단계</span>
         <h2>생일을 입력하세요</h2>
-        <p>월과 일을 기준으로 별자리를 자동으로 알려드립니다.</p>
+        <p>년도는 크게 맞추고, 아래 생일 칸에서 월과 일을 편하게 고르세요.</p>
+      </div>
+      <div className="year-picker" aria-label="생일 년도 선택">
+        <span>출생년도</span>
+        <div className="year-controls">
+          <button type="button" onClick={() => changeYear(selectedYear - 10)} aria-label="10년 전">
+            -10
+          </button>
+          <button type="button" onClick={() => changeYear(selectedYear - 1)} aria-label="1년 전">
+            -1
+          </button>
+          <input
+            type="number"
+            inputMode="numeric"
+            min="1900"
+            max={currentYear}
+            value={selectedYear}
+            onChange={(event) => changeYear(event.target.value)}
+            aria-label="출생년도 직접 입력"
+          />
+          <button type="button" onClick={() => changeYear(selectedYear + 1)} aria-label="1년 후">
+            +1
+          </button>
+          <button type="button" onClick={() => changeYear(selectedYear + 10)} aria-label="10년 후">
+            +10
+          </button>
+        </div>
       </div>
       <label className="text-field">
-        생일
+        월과 일
         <input
           type="date"
+          min="1900-01-01"
+          max={`${currentYear}-12-31`}
           value={value}
           onChange={(event) => onChange(event.target.value)}
           onInput={(event) => onChange(event.target.value)}
@@ -243,6 +280,20 @@ function BirthdayStep({ value, zodiac, onChange }) {
       </div>
     </section>
   );
+}
+
+function getBirthdayParts(dateValue) {
+  if (!dateValue) return {};
+  const [yearText, monthText, dayText] = dateValue.split("-");
+  return {
+    year: Number(yearText),
+    month: Number(monthText),
+    day: Number(dayText),
+  };
+}
+
+function makeBirthdayValue(year, month, day) {
+  return `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }
 
 function MagicStep({ form, zodiac }) {
